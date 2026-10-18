@@ -16,6 +16,18 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     /* --------------------------------------------------------------------------
+     * 0. CONFIGURACIÓN CENTRALIZADA DEL PERFIL (Personalizable)
+     * -------------------------------------------------------------------------- */
+    const CONFIG = {
+        // Ingresa tu número de WhatsApp con código de país (ejemplo: '51987654321')
+        // Si se deja vacío (''), abrirá WhatsApp para que la persona elija el chat
+        whatsappPhone: '',
+        telegramUsername: 'AldairReyesRoj1',
+        officialSite: 'https://segundoreyesr.com',
+        email: 'segundo33reyesrojas@gmail.com'
+    };
+
+    /* --------------------------------------------------------------------------
      * 1. AÑO DINÁMICO & RELOJ EN VIVO (LIMA, PERÚ)
      * -------------------------------------------------------------------------- */
     const yearSpan = document.getElementById('currentYear');
@@ -273,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
     async function copyCurrentUrl() {
         const urlToCopy = window.location.href.startsWith('http') 
             ? window.location.href 
-            : 'https://segundoreyes.com';
+            : CONFIG.officialSite;
 
         try {
             if (navigator.clipboard && window.isSecureContext) {
@@ -310,7 +322,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const shareData = {
                 title: 'Segundo Reyes | Redes Sociales & Perfil Oficial',
                 text: '¡Hola! Te comparto el portal oficial y redes de Segundo Reyes.',
-                url: window.location.href.startsWith('http') ? window.location.href : 'https://segundoreyes.com'
+                url: window.location.href.startsWith('http') ? window.location.href : CONFIG.officialSite
             };
 
             if (navigator.share && /mobile|android|iphone|ipad/i.test(navigator.userAgent)) {
@@ -365,12 +377,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* --------------------------------------------------------------------------
-     * 9. MODAL DE MENSAJE RÁPIDO A WHATSAPP
+     * 9. MODAL DE MENSAJE RÁPIDO A WHATSAPP & SERVICIOS TI
      * -------------------------------------------------------------------------- */
     const waCardBtn = document.getElementById('btn-whatsapp');
     const waModal = document.getElementById('whatsappModal');
     const closeWaModal = document.getElementById('closeWhatsAppModal');
     const waForm = document.getElementById('whatsappForm');
+    const servicesBtn = document.getElementById('btn-services');
 
     if (waCardBtn && waModal) {
         waCardBtn.addEventListener('click', (e) => {
@@ -378,6 +391,36 @@ document.addEventListener('DOMContentLoaded', () => {
             playSound('click');
             waModal.classList.add('active');
             waModal.setAttribute('aria-hidden', 'false');
+        });
+    }
+
+    // Tarjeta Servicios & Soporte TI: abre el formulario con asunto preseleccionado
+    if (servicesBtn && waModal) {
+        const handleServicesClick = (e) => {
+            if (e) e.preventDefault();
+            playSound('click');
+            const waTopic = document.getElementById('waTopic');
+            if (waTopic) {
+                waTopic.value = 'Consulta sobre TI o Diseño';
+            }
+            const waMessage = document.getElementById('waMessage');
+            if (waMessage && !waMessage.value) {
+                waMessage.placeholder = 'Hola Segundo, me interesa cotizar soporte técnico / desarrollo web...';
+            }
+            waModal.classList.add('active');
+            waModal.setAttribute('aria-hidden', 'false');
+            setTimeout(() => {
+                const nameInput = document.getElementById('waName');
+                if (nameInput) nameInput.focus();
+            }, 150);
+        };
+
+        servicesBtn.addEventListener('click', handleServicesClick);
+        servicesBtn.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleServicesClick();
+            }
         });
     }
 
@@ -403,8 +446,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const topic = document.getElementById('waTopic').value;
             const message = document.getElementById('waMessage').value.trim();
 
-            const fullText = `¡Hola Segundo! 👋\n\n👤 Mi nombre: ${name}\n📌 Asunto: ${topic}\n💬 Mensaje: ${message}\n\n(Enviado desde tu perfil web)`;
-            const waUrl = `https://wa.me/?text=${encodeURIComponent(fullText)}`;
+            const fullText = `¡Hola Segundo! 👋\n\n👤 Mi nombre: ${name}\n📌 Asunto: ${topic}\n💬 Mensaje: ${message}\n\n(Enviado desde tu perfil web ${CONFIG.officialSite})`;
+            
+            const cleanPhone = CONFIG.whatsappPhone ? CONFIG.whatsappPhone.replace(/[^0-9]/g, '') : '';
+            const waUrl = cleanPhone 
+                ? `https://wa.me/${cleanPhone}?text=${encodeURIComponent(fullText)}`
+                : `https://wa.me/?text=${encodeURIComponent(fullText)}`;
 
             playSound('success');
             if (window.fireConfetti) window.fireConfetti();
@@ -471,7 +518,8 @@ document.addEventListener('DOMContentLoaded', () => {
             showToast('¡Mensaje copiado! Pégalo en el chat de Telegram ✈️');
 
             setTimeout(() => {
-                window.open('https://t.me/AldairReyesRoj1', '_blank', 'noopener,noreferrer');
+                const tgUrl = `https://t.me/${CONFIG.telegramUsername}`;
+                window.open(tgUrl, '_blank', 'noopener,noreferrer');
                 tgModal.classList.remove('active');
                 tgModal.setAttribute('aria-hidden', 'true');
                 tgForm.reset();
@@ -733,5 +781,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
         initParticles();
         animate();
+    }
+
+    /* --------------------------------------------------------------------------
+     * 15. REGISTRO DE SERVICE WORKER PARA PWA (OFFLINE & INSTALACIÓN)
+     * -------------------------------------------------------------------------- */
+    if ('serviceWorker' in navigator && (window.location.protocol.startsWith('http') || window.location.protocol.startsWith('https'))) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+                .then(reg => {
+                    console.log('PWA Service Worker registrado con éxito:', reg.scope);
+                })
+                .catch(err => {
+                    console.warn('Registro de Service Worker PWA no completado:', err);
+                });
+        });
     }
 });

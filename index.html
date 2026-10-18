@@ -11,6 +11,10 @@
     <meta name="author" content="Segundo Reyes">
     <meta name="theme-color" content="#080b11">
     
+    <!-- Canonical & PWA Manifest -->
+    <link rel="canonical" href="https://segundoreyesr.com/">
+    <link rel="manifest" href="manifest.webmanifest">
+    
     <!-- Favicon & Iconos de Pestaña -->
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
     <link rel="alternate icon" type="image/jpeg" href="assets/avatar.jpg">
@@ -18,9 +22,10 @@
 
     <!-- Open Graph / WhatsApp / Facebook / LinkedIn / Telegram -->
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://segundoreyesr.com/">
     <meta property="og:title" content="Segundo Reyes | Enlaces & Perfil Oficial">
     <meta property="og:description" content="Apasionado por la tecnología, la informática y el diseño. Conoce mis redes y proyectos.">
-    <meta property="og:image" content="assets/og-preview.jpg">
+    <meta property="og:image" content="https://segundoreyesr.com/assets/og-preview.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="Segundo Reyes - Tech & Design">
@@ -29,9 +34,50 @@
 
     <!-- Twitter / X Cards -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://segundoreyesr.com/">
     <meta name="twitter:title" content="Segundo Reyes | Enlaces & Perfil Oficial">
     <meta name="twitter:description" content="Apasionado por la tecnología, la informática y el diseño. Conéctate conmigo en mis redes.">
-    <meta name="twitter:image" content="assets/og-preview.jpg">
+    <meta name="twitter:image" content="https://segundoreyesr.com/assets/og-preview.jpg">
+
+    <!-- Datos Estructurados Schema.org JSON-LD (SEO Google) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://segundoreyesr.com/#person",
+          "name": "Segundo Reyes",
+          "alternateName": "Segundo Aldair Reyes Rojas",
+          "url": "https://segundoreyesr.com",
+          "image": "https://segundoreyesr.com/assets/avatar.jpg",
+          "jobTitle": "Especialista en TI & Diseñador",
+          "description": "Apasionado por la tecnología, la informática y el diseño interactivo.",
+          "sameAs": [
+            "https://github.com/Aldair29we",
+            "https://github.com/Alda29we/segundoreyesr.com",
+            "https://www.instagram.com/segundoaldairreyesr/",
+            "https://www.facebook.com/share/1Aak2EiPfn/",
+            "https://x.com/AldairReyesRoj1",
+            "https://t.me/AldairReyesRoj1"
+          ]
+        },
+        {
+          "@type": "ProfilePage",
+          "@id": "https://segundoreyesr.com/#webpage",
+          "url": "https://segundoreyesr.com",
+          "name": "Segundo Reyes | Redes Sociales & Perfil Oficial",
+          "isPartOf": {
+            "@type": "WebSite",
+            "@id": "https://segundoreyesr.com/#website",
+            "url": "https://segundoreyesr.com",
+            "name": "Segundo Reyes"
+          },
+          "about": { "@id": "https://segundoreyesr.com/#person" }
+        }
+      ]
+    }
+    </script>
 
     <!-- Tipografía Google Fonts & Iconos FontAwesome 6 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -211,7 +257,7 @@
             </a>
 
             <!-- Proyecto 3: Servicios y Soporte TI -->
-            <div class="link-card card-services" data-category="projects skills contact" id="btn-services">
+            <div class="link-card card-services" data-category="projects skills contact" id="btn-services" role="button" tabindex="0" aria-label="Solicitar servicios y soporte TI">
                 <div class="card-icon">
                     <i class="fa-solid fa-screwdriver-wrench"></i>
                 </div>
@@ -223,7 +269,7 @@
                     <span class="card-desc">Mantenimiento de computadoras, redes y consultoría tecnológica</span>
                 </div>
                 <div class="card-action">
-                    <i class="fa-solid fa-circle-check"></i>
+                    <i class="fa-solid fa-paper-plane"></i>
                 </div>
             </div>
 

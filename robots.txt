@@ -1,0 +1,5 @@
+# robots.txt para https://segundoreyesr.com
+User-agent: *
+Allow: /
+
+Sitemap: https://segundoreyesr.com/sitemap.xml
