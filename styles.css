@@ -1,0 +1,741 @@
+/* ==========================================================================
+   SEGUNDO REYES - MODERN LINK-IN-BIO & PORTAL
+   Diseño de Vanguardia | Modo Oscuro Premium | Glassmorphism & Micro-animaciones
+   ========================================================================== */
+
+:root {
+    --bg-dark: #080b11;
+    --card-bg: rgba(16, 22, 34, 0.72);
+    --card-border: rgba(255, 255, 255, 0.08);
+    --card-hover-border: rgba(0, 242, 254, 0.4);
+    
+    --text-primary: #ffffff;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    
+    --primary-cyan: #00f2fe;
+    --primary-blue: #4facfe;
+    --primary-purple: #8a2be2;
+    --accent-glow: rgba(0, 242, 254, 0.25);
+    
+    --radius-xl: 28px;
+    --radius-lg: 18px;
+    --radius-md: 14px;
+    --radius-full: 9999px;
+    
+    --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    --transition-bounce: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Reset y Base */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 16px;
+    overflow-x: hidden;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ==========================================================================
+   FONDOS AMBIENTALES DE LUZ DINÁMICA (AURORA GLOW)
+   ========================================================================== */
+.ambient-glow {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.38;
+    pointer-events: none;
+    z-index: 0;
+    will-change: transform;
+}
+
+.glow-cyan {
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle, #00f2fe, #4facfe, transparent 70%);
+    top: -100px;
+    left: 50%;
+    transform: translateX(-60%);
+    animation: floatOrb1 16s ease-in-out infinite alternate;
+}
+
+.glow-purple {
+    width: 480px;
+    height: 480px;
+    background: radial-gradient(circle, #7928ca, #ff0080, transparent 70%);
+    bottom: -120px;
+    right: 5%;
+    animation: floatOrb2 20s ease-in-out infinite alternate;
+}
+
+.glow-blue {
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, #0070f3, #00dfd8, transparent 70%);
+    top: 45%;
+    left: -80px;
+    animation: floatOrb3 18s ease-in-out infinite alternate;
+}
+
+@keyframes floatOrb1 {
+    0% { transform: translate(-60%, 0) scale(1); }
+    100% { transform: translate(-40%, 60px) scale(1.15); }
+}
+
+@keyframes floatOrb2 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(-50px, -70px) scale(1.12); }
+}
+
+@keyframes floatOrb3 {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(60px, -40px) scale(1.2); }
+}
+
+/* ==========================================================================
+   CONTENEDOR PRINCIPAL
+   ========================================================================== */
+.container {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 520px;
+    background: var(--card-bg);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-xl);
+    padding: 32px 28px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+    animation: cardEntrance 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes cardEntrance {
+    from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ==========================================================================
+   BARRA SUPERIOR (NAV / ACCIONES)
+   ========================================================================== */
+.top-nav {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.nav-action-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    padding: 8px 14px;
+    border-radius: var(--radius-full);
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.nav-action-btn:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+}
+
+.nav-action-btn:active {
+    transform: scale(0.96);
+}
+
+/* ==========================================================================
+   ENCABEZADO DE PERFIL
+   ========================================================================== */
+.profile-header {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+/* Avatar con Anillo Animado */
+.avatar-container {
+    position: relative;
+    width: 124px;
+    height: 124px;
+    margin-bottom: 18px;
+}
+
+.avatar-ring {
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, #00f2fe, #4facfe, #8a2be2, #ff007f, #00f2fe);
+    animation: rotateAura 6s linear infinite;
+    filter: blur(4px);
+    opacity: 0.85;
+}
+
+@keyframes rotateAura {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.avatar-img {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #0d131f;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+    transition: var(--transition-smooth);
+}
+
+.avatar-container:hover .avatar-img {
+    transform: scale(1.04);
+}
+
+/* Indicador de Estado Activo */
+.status-indicator {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 22px;
+    height: 22px;
+    background: #0d131f;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    background: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 12px #10b981;
+}
+
+/* Píldora de Disponibilidad */
+.badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(16, 185, 129, 0.1);
+    border: 1px solid rgba(16, 185, 129, 0.25);
+    color: #34d399;
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    margin-bottom: 14px;
+}
+
+.pulse-point {
+    width: 7px;
+    height: 7px;
+    background: #10b981;
+    border-radius: 50%;
+    box-shadow: 0 0 8px #10b981;
+    animation: pulseDot 2s infinite;
+}
+
+@keyframes pulseDot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.8); }
+}
+
+/* Nombre de Perfil */
+.profile-name {
+    font-size: 1.85rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #ffffff;
+    margin-bottom: 6px;
+}
+
+.verified-badge {
+    color: #00f2fe;
+    font-size: 1.25rem;
+    filter: drop-shadow(0 0 8px rgba(0, 242, 254, 0.5));
+}
+
+.profile-tagline {
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+}
+
+.profile-tagline .tag {
+    color: #e2e8f0;
+    font-weight: 600;
+}
+
+.profile-bio {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    line-height: 1.55;
+    max-width: 440px;
+}
+
+/* ==========================================================================
+   LISTADO DE ENLACES (LINK CARDS)
+   ========================================================================== */
+.links-section {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.link-card {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 14px 18px;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    color: var(--text-primary);
+    overflow: hidden;
+    transition: var(--transition-smooth);
+    opacity: 0;
+    animation: fadeInCard 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Animación de entrada escalonada */
+@keyframes fadeInCard {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.link-card:nth-child(1) { animation-delay: 0.10s; }
+.link-card:nth-child(2) { animation-delay: 0.17s; }
+.link-card:nth-child(3) { animation-delay: 0.24s; }
+.link-card:nth-child(4) { animation-delay: 0.31s; }
+.link-card:nth-child(5) { animation-delay: 0.38s; }
+.link-card:nth-child(6) { animation-delay: 0.45s; }
+
+/* Brillo Dinámico al pasar el cursor (Shine sweep) */
+.link-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 60%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+    transform: skewX(-25deg);
+    transition: left 0.7s ease;
+    pointer-events: none;
+}
+
+.link-card:hover::before {
+    left: 150%;
+}
+
+.link-card:hover {
+    transform: translateY(-3px) scale(1.012);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.link-card:active {
+    transform: scale(0.98);
+}
+
+/* Iconos de las tarjetas */
+.card-icon {
+    width: 46px;
+    height: 46px;
+    min-width: 46px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+    color: #ffffff;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
+    transition: var(--transition-smooth);
+}
+
+.link-card:hover .card-icon {
+    transform: scale(1.08) rotate(4deg);
+}
+
+/* Información de la tarjeta */
+.card-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    min-width: 0;
+}
+
+.card-title {
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 2px;
+}
+
+.card-desc {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Icono de Acción / Flecha */
+.card-action {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    transition: var(--transition-smooth);
+}
+
+.link-card:hover .card-action {
+    color: #ffffff;
+    transform: translate(3px, -3px);
+}
+
+/* ==========================================================================
+   ESTILOS ESPECÍFICOS DE MARCA
+   ========================================================================== */
+/* Facebook */
+.card-facebook .card-icon {
+    background: linear-gradient(135deg, #1877f2, #0b5ec4);
+}
+.card-facebook:hover {
+    border-color: rgba(24, 119, 242, 0.45);
+    box-shadow: 0 10px 30px rgba(24, 119, 242, 0.25);
+}
+
+/* Instagram */
+.card-instagram .card-icon {
+    background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+}
+.card-instagram:hover {
+    border-color: rgba(225, 48, 108, 0.45);
+    box-shadow: 0 10px 30px rgba(225, 48, 108, 0.25);
+}
+
+/* X (Twitter) */
+.card-x .card-icon {
+    background: linear-gradient(135deg, #1f2937, #000000);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+.card-x:hover {
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow: 0 10px 30px rgba(255, 255, 255, 0.12);
+}
+
+/* LinkedIn */
+.card-linkedin .card-icon {
+    background: linear-gradient(135deg, #0077b5, #005582);
+}
+.card-linkedin:hover {
+    border-color: rgba(0, 119, 181, 0.45);
+    box-shadow: 0 10px 30px rgba(0, 119, 181, 0.25);
+}
+
+/* YouTube */
+.card-youtube .card-icon {
+    background: linear-gradient(135deg, #ff0000, #b30000);
+}
+.card-youtube:hover {
+    border-color: rgba(255, 0, 0, 0.45);
+    box-shadow: 0 10px 30px rgba(255, 0, 0, 0.25);
+}
+
+/* NGL Especial (Llama con gradiente de fuego) */
+.card-ngl .card-icon {
+    background: linear-gradient(135deg, #ff5e00, #ff007f);
+    animation: pulseFlame 2.5s infinite alternate;
+}
+.card-ngl {
+    background: linear-gradient(90deg, rgba(255, 94, 0, 0.08), rgba(255, 0, 127, 0.08));
+    border-color: rgba(255, 94, 0, 0.25);
+}
+.card-ngl:hover {
+    border-color: rgba(255, 94, 0, 0.6);
+    box-shadow: 0 10px 30px rgba(255, 94, 0, 0.35);
+}
+
+@keyframes pulseFlame {
+    0% { transform: scale(1); filter: drop-shadow(0 0 4px rgba(255, 94, 0, 0.6)); }
+    100% { transform: scale(1.08); filter: drop-shadow(0 0 14px rgba(255, 0, 127, 0.9)); }
+}
+
+/* ==========================================================================
+   PIE DE PÁGINA (FOOTER)
+   ========================================================================== */
+.profile-footer {
+    margin-top: 36px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.footer-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 5px 12px;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    letter-spacing: 0.2px;
+}
+
+.footer-badge i {
+    color: #00f2fe;
+}
+
+.copyright {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+/* ==========================================================================
+   MODAL QR CODE
+   ========================================================================== */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    padding: 20px;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-card {
+    position: relative;
+    background: #0f1624;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: var(--radius-xl);
+    padding: 30px 24px;
+    max-width: 360px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+    transform: scale(0.92) translateY(15px);
+    transition: var(--transition-bounce);
+}
+
+.modal-overlay.active .modal-card {
+    transform: scale(1) translateY(0);
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: rgba(255, 255, 255, 0.06);
+    border: none;
+    color: var(--text-secondary);
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.modal-close-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+.modal-header h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.modal-header p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+.qr-box {
+    background: #080c14;
+    padding: 18px;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(0, 242, 254, 0.25);
+    display: inline-block;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 30px rgba(0, 242, 254, 0.15);
+}
+
+.qr-box img {
+    display: block;
+    border-radius: 10px;
+}
+
+.btn-copy-link {
+    width: 100%;
+    background: linear-gradient(135deg, #00f2fe, #4facfe);
+    color: #080b11;
+    border: none;
+    padding: 12px;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    font-size: 0.9rem;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.btn-copy-link:hover {
+    opacity: 0.95;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 242, 254, 0.4);
+}
+
+/* ==========================================================================
+   TOAST NOTIFICATION FLOTANTE
+   ========================================================================== */
+.toast-notification {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(40px);
+    background: rgba(15, 23, 42, 0.95);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(0, 242, 254, 0.4);
+    color: #ffffff;
+    padding: 12px 22px;
+    border-radius: var(--radius-full);
+    font-size: 0.88rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 242, 254, 0.2);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 200;
+    transition: var(--transition-bounce);
+}
+
+.toast-notification.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+    pointer-events: auto;
+}
+
+.toast-notification i {
+    color: #10b981;
+    font-size: 1.1rem;
+}
+
+/* ==========================================================================
+   RESPONSIVIDAD Y AJUSTES MÓVILES
+   ========================================================================== */
+@media (max-width: 480px) {
+    body {
+        padding: 16px 10px;
+    }
+
+    .container {
+        padding: 24px 18px;
+        border-radius: 22px;
+    }
+
+    .avatar-container {
+        width: 108px;
+        height: 108px;
+    }
+
+    .profile-name {
+        font-size: 1.6rem;
+    }
+
+    .profile-bio {
+        font-size: 0.88rem;
+    }
+
+    .link-card {
+        padding: 12px 14px;
+        gap: 12px;
+    }
+
+    .card-icon {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+        font-size: 1.2rem;
+    }
+
+    .card-title {
+        font-size: 0.95rem;
+    }
+
+    .card-desc {
+        font-size: 0.75rem;
+    }
+}
