@@ -45,6 +45,8 @@
 
     <!-- Canvas de Partículas Interactivas en Segundo Plano -->
     <canvas id="bgCanvas"></canvas>
+    <!-- Canvas de Confeti Celebratorio -->
+    <canvas id="confettiCanvas"></canvas>
 
     <!-- Fondos de Luz Ambiental Animados (Aurora Glow) -->
     <div class="ambient-glow glow-cyan"></div>
@@ -120,9 +122,9 @@
 
             <!-- Métricas Rápidas / Bento Stats -->
             <div class="stats-row">
-                <div class="stat-pill">
-                    <i class="fa-solid fa-location-dot"></i>
-                    <span>Perú</span>
+                <div class="stat-pill" id="localTimePill" title="Hora local en tiempo real (Lima, Perú)">
+                    <i class="fa-regular fa-clock"></i>
+                    <span id="localTimeText">Lima • --:--</span>
                 </div>
                 <div class="stat-pill highlight">
                     <span class="pulse-point"></span>
@@ -140,6 +142,9 @@
             <button class="tab-btn active" data-filter="all" role="tab" aria-selected="true">
                 <i class="fa-solid fa-layer-group"></i> Todos
             </button>
+            <button class="tab-btn" data-filter="projects" role="tab" aria-selected="false">
+                <i class="fa-solid fa-rocket"></i> Proyectos
+            </button>
             <button class="tab-btn" data-filter="social" role="tab" aria-selected="false">
                 <i class="fa-solid fa-hashtag"></i> Redes
             </button>
@@ -154,22 +159,73 @@
         <!-- Sección de Enlaces y Contenido Bento -->
         <main class="links-section" id="linksContainer">
 
-            <!-- 1. WhatsApp Directo (Contacto) -->
-            <a href="https://wa.me/?text=Hola%20Segundo,%20vi%20tu%20perfil%20web%20y%20me%20gustar%C3%ADa%20conversar" target="_blank" rel="noopener noreferrer" class="link-card card-whatsapp" data-category="contact" id="btn-whatsapp">
+            <!-- 1. WhatsApp Directo & Redactor Rápido (Contacto) -->
+            <div class="link-card card-whatsapp" data-category="contact" id="btn-whatsapp">
                 <div class="card-icon">
                     <i class="fa-brands fa-whatsapp"></i>
                 </div>
                 <div class="card-info">
                     <div class="card-title-row">
                         <span class="card-title">WhatsApp Directo</span>
-                        <span class="badge-new">Rápido</span>
+                        <span class="badge-new">Mensaje Rápido</span>
                     </div>
-                    <span class="card-desc">Escríbeme un mensaje directo al instante</span>
+                    <span class="card-desc">Redacta y envía un mensaje directo a mi chat</span>
+                </div>
+                <div class="card-action">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </div>
+            </div>
+
+            <!-- Proyecto 1: GitHub Oficial -->
+            <a href="https://github.com/Aldair29we" target="_blank" rel="noopener noreferrer" class="link-card card-github" data-category="projects" id="btn-github">
+                <div class="card-icon">
+                    <i class="fa-brands fa-github"></i>
+                </div>
+                <div class="card-info">
+                    <div class="card-title-row">
+                        <span class="card-title">GitHub Oficial</span>
+                        <span class="badge-github"><i class="fa-solid fa-code-fork"></i> Repos</span>
+                    </div>
+                    <span class="card-desc">Código abierto, experimentos y proyectos de desarrollo</span>
                 </div>
                 <div class="card-action">
                     <i class="fa-solid fa-arrow-up-right-from-square"></i>
                 </div>
             </a>
+
+            <!-- Proyecto 2: Mi Portal Web segundoreyesr.com -->
+            <a href="https://github.com/Aldair29we/segundoreyesr.com" target="_blank" rel="noopener noreferrer" class="link-card card-portal" data-category="projects" id="btn-portal-repo">
+                <div class="card-icon">
+                    <i class="fa-solid fa-code"></i>
+                </div>
+                <div class="card-info">
+                    <div class="card-title-row">
+                        <span class="card-title">segundoreyesr.com</span>
+                        <span class="badge-vercel"><i class="fa-solid fa-bolt"></i> Vercel</span>
+                    </div>
+                    <span class="card-desc">Portal web interactivo con modo oscuro y micro-animaciones</span>
+                </div>
+                <div class="card-action">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </div>
+            </a>
+
+            <!-- Proyecto 3: Servicios y Soporte TI -->
+            <div class="link-card card-services" data-category="projects skills contact" id="btn-services">
+                <div class="card-icon">
+                    <i class="fa-solid fa-screwdriver-wrench"></i>
+                </div>
+                <div class="card-info">
+                    <div class="card-title-row">
+                        <span class="card-title">Servicios & Soporte TI</span>
+                        <span class="badge-service">Disponible</span>
+                    </div>
+                    <span class="card-desc">Mantenimiento de computadoras, redes y consultoría tecnológica</span>
+                </div>
+                <div class="card-action">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+            </div>
 
             <!-- 2. Instagram (Social) -->
             <a href="https://www.instagram.com/segundoaldairreyesr/#" target="_blank" rel="noopener noreferrer" class="link-card card-instagram" data-category="social" id="btn-instagram">
@@ -353,6 +409,44 @@
             <button class="btn-copy-link" id="copyLinkModalBtn">
                 <i class="fa-regular fa-copy"></i> Copiar enlace directo
             </button>
+        </div>
+    </div>
+
+    <!-- Modal WhatsApp Rápido -->
+    <div class="modal-overlay" id="whatsappModal" aria-hidden="true">
+        <div class="modal-card">
+            <button class="modal-close-btn" id="closeWhatsAppModal" aria-label="Cerrar ventana">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="modal-header">
+                <div class="modal-icon-badge badge-wa-icon">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </div>
+                <h3>Mensaje a WhatsApp</h3>
+                <p>Escribe tus datos y se abrirá tu WhatsApp listo para enviar</p>
+            </div>
+            <form id="whatsappForm" class="modal-form">
+                <div class="form-group">
+                    <label for="waName">Tu Nombre o Empresa</label>
+                    <input type="text" id="waName" placeholder="Ej. Carlos Mendoza" required autocomplete="name">
+                </div>
+                <div class="form-group">
+                    <label for="waTopic">Motivo del Contacto</label>
+                    <select id="waTopic">
+                        <option value="Propuesta de Proyecto">🚀 Propuesta de Proyecto / Trabajo</option>
+                        <option value="Consulta sobre TI o Diseño">💡 Consulta sobre TI o Diseño</option>
+                        <option value="Conectar y Networking">🤝 Conectar y Networking</option>
+                        <option value="Consulta General">💬 Consulta General</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="waMessage">Tu Mensaje</label>
+                    <textarea id="waMessage" rows="3" placeholder="Hola Segundo, me gustaría conversar sobre..." required></textarea>
+                </div>
+                <button type="submit" class="btn-submit-wa" id="btnSubmitWa">
+                    <i class="fa-brands fa-whatsapp"></i> Abrir en WhatsApp
+                </button>
+            </form>
         </div>
     </div>
 

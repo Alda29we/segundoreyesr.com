@@ -1,6 +1,9 @@
 /**
  * ==========================================================================
  * SEGUNDO REYES - INTERACTIVIDAD Y EXPERIENCIA DE USUARIO AVANZADA
+ * - Reloj Dinámico en Vivo (Hora Local de Lima, Perú)
+ * - Motor de Confeti Celebratorio en Canvas
+ * - Modal Interactivo de WhatsApp con Formulario Rápido
  * - Motor de Partículas Interactivas en Canvas
  * - Spotlight Dinámico y Efecto 3D Tilt
  * - Sintetizador de Sonido Háptico UI (Web Audio API)
@@ -13,15 +16,104 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     /* --------------------------------------------------------------------------
-     * 1. AÑO DINÁMICO
+     * 1. AÑO DINÁMICO & RELOJ EN VIVO (LIMA, PERÚ)
      * -------------------------------------------------------------------------- */
     const yearSpan = document.getElementById('currentYear');
     if (yearSpan) {
         yearSpan.textContent = new Date().getFullYear();
     }
 
+    const timeElement = document.getElementById('localTimeText');
+    function updatePeruTime() {
+        if (!timeElement) return;
+        try {
+            const formatter = new Intl.DateTimeFormat('es-PE', {
+                timeZone: 'America/Lima',
+                hour: 'numeric',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: true
+            });
+            timeElement.textContent = `Lima • ${formatter.format(new Date())}`;
+        } catch (e) {
+            timeElement.textContent = 'Lima, Perú';
+        }
+    }
+    updatePeruTime();
+    setInterval(updatePeruTime, 1000);
+
     /* --------------------------------------------------------------------------
-     * 2. SINTETIZADOR DE EFECTOS DE SONIDO UI (Web Audio API)
+     * 2. MOTOR DE CONFETI CELEBRATORIO EN CANVAS
+     * -------------------------------------------------------------------------- */
+    const confettiCanvas = document.getElementById('confettiCanvas');
+    let confettiPieces = [];
+    let confettiAnimationId = null;
+
+    if (confettiCanvas) {
+        const cCtx = confettiCanvas.getContext('2d');
+        function resizeConfetti() {
+            confettiCanvas.width = window.innerWidth;
+            confettiCanvas.height = window.innerHeight;
+        }
+        resizeConfetti();
+        window.addEventListener('resize', resizeConfetti);
+
+        window.fireConfetti = function(x = window.innerWidth / 2, y = window.innerHeight * 0.4) {
+            const colors = ['#00f2fe', '#4facfe', '#c084fc', '#ff007f', '#10b981', '#fbbf24', '#ff7e5f'];
+            for (let i = 0; i < 75; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const velocity = Math.random() * 9 + 4;
+                confettiPieces.push({
+                    x: x,
+                    y: y,
+                    vx: Math.cos(angle) * velocity,
+                    vy: Math.sin(angle) * velocity - 4,
+                    size: Math.random() * 8 + 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    rotation: Math.random() * 360,
+                    rotationSpeed: (Math.random() - 0.5) * 14,
+                    alpha: 1,
+                    gravity: 0.22,
+                    decay: Math.random() * 0.015 + 0.009
+                });
+            }
+            if (!confettiAnimationId) {
+                animateConfetti();
+            }
+        };
+
+        function animateConfetti() {
+            cCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            confettiPieces = confettiPieces.filter(p => p.alpha > 0.01);
+
+            for (let i = 0; i < confettiPieces.length; i++) {
+                const p = confettiPieces[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += p.gravity;
+                p.rotation += p.rotationSpeed;
+                p.alpha -= p.decay;
+
+                cCtx.save();
+                cCtx.translate(p.x, p.y);
+                cCtx.rotate((p.rotation * Math.PI) / 180);
+                cCtx.fillStyle = p.color;
+                cCtx.globalAlpha = Math.max(p.alpha, 0);
+                cCtx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+                cCtx.restore();
+            }
+
+            if (confettiPieces.length > 0) {
+                confettiAnimationId = requestAnimationFrame(animateConfetti);
+            } else {
+                confettiAnimationId = null;
+                cCtx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);
+            }
+        }
+    }
+
+    /* --------------------------------------------------------------------------
+     * 3. SINTETIZADOR DE EFECTOS DE SONIDO UI (Web Audio API)
      * -------------------------------------------------------------------------- */
     let audioCtx = null;
     let isSoundMuted = localStorage.getItem('sr_sound_muted') === 'true';
@@ -52,7 +144,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const now = audioCtx.currentTime;
 
             if (type === 'click') {
-                // Sonido pop sutil y agradable
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(600, now);
                 osc.frequency.exponentialRampToValueAtTime(800, now + 0.05);
@@ -61,7 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 osc.start(now);
                 osc.stop(now + 0.05);
             } else if (type === 'toggle') {
-                // Sonido chime suave
                 osc.type = 'triangle';
                 osc.frequency.setValueAtTime(440, now);
                 osc.frequency.exponentialRampToValueAtTime(880, now + 0.1);
@@ -70,7 +160,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 osc.start(now);
                 osc.stop(now + 0.1);
             } else if (type === 'success') {
-                // Sonido de éxito
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(523.25, now);
                 osc.frequency.setValueAtTime(659.25, now + 0.08);
@@ -84,7 +173,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Toggle de Sonido
     const soundToggleBtn = document.getElementById('soundToggleBtn');
     const soundIcon = document.getElementById('soundIcon');
 
@@ -116,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* --------------------------------------------------------------------------
-     * 3. SELECTOR DE TEMAS DE COLOR DE ACENTO
+     * 4. SELECTOR DE TEMAS DE COLOR DE ACENTO
      * -------------------------------------------------------------------------- */
     const accentButtons = document.querySelectorAll('.accent-dot-btn');
     const htmlElement = document.documentElement;
@@ -141,7 +229,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Actualizar color del código QR si existe
         if (qrImage) {
             const colorCode = qrThemeColors[theme] || '0-242-254';
             const currentUrl = window.location.href.startsWith('http') 
@@ -163,7 +250,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /* --------------------------------------------------------------------------
-     * 4. NOTIFICACIÓN TOAST FLOTANTE
+     * 5. NOTIFICACIÓN TOAST FLOTANTE
      * -------------------------------------------------------------------------- */
     const toast = document.getElementById('toastNotification');
     const toastMessage = document.getElementById('toastMessage');
@@ -181,7 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* --------------------------------------------------------------------------
-     * 5. COPIAR ENLACE AL PORTAPAPELES
+     * 6. COPIAR ENLACE AL PORTAPAPELES
      * -------------------------------------------------------------------------- */
     async function copyCurrentUrl() {
         const urlToCopy = window.location.href.startsWith('http') 
@@ -192,6 +279,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (navigator.clipboard && window.isSecureContext) {
                 await navigator.clipboard.writeText(urlToCopy);
                 playSound('success');
+                if (window.fireConfetti) window.fireConfetti();
                 showToast('¡Enlace copiado al portapapeles! 🚀');
             } else {
                 const textArea = document.createElement('textarea');
@@ -204,6 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.execCommand('copy');
                 textArea.remove();
                 playSound('success');
+                if (window.fireConfetti) window.fireConfetti();
                 showToast('¡Enlace copiado al portapapeles! 📋');
             }
         } catch (err) {
@@ -212,7 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* --------------------------------------------------------------------------
-     * 6. COMPARTIR PERFIL (Web Share API)
+     * 7. COMPARTIR PERFIL (Web Share API)
      * -------------------------------------------------------------------------- */
     const shareBtn = document.getElementById('shareProfileBtn');
     if (shareBtn) {
@@ -239,7 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* --------------------------------------------------------------------------
-     * 7. MODAL DE CÓDIGO QR
+     * 8. MODAL DE CÓDIGO QR
      * -------------------------------------------------------------------------- */
     const qrBtn = document.getElementById('qrModalBtn');
     const qrModal = document.getElementById('qrModal');
@@ -276,7 +365,62 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* --------------------------------------------------------------------------
-     * 8. COPIAR CORREO ELECTRÓNICO DIRECTO
+     * 9. MODAL DE MENSAJE RÁPIDO A WHATSAPP
+     * -------------------------------------------------------------------------- */
+    const waCardBtn = document.getElementById('btn-whatsapp');
+    const waModal = document.getElementById('whatsappModal');
+    const closeWaModal = document.getElementById('closeWhatsAppModal');
+    const waForm = document.getElementById('whatsappForm');
+
+    if (waCardBtn && waModal) {
+        waCardBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            playSound('click');
+            waModal.classList.add('active');
+            waModal.setAttribute('aria-hidden', 'false');
+        });
+    }
+
+    if (closeWaModal && waModal) {
+        closeWaModal.addEventListener('click', () => {
+            playSound('click');
+            waModal.classList.remove('active');
+            waModal.setAttribute('aria-hidden', 'true');
+        });
+
+        waModal.addEventListener('click', (e) => {
+            if (e.target === waModal) {
+                waModal.classList.remove('active');
+                waModal.setAttribute('aria-hidden', 'true');
+            }
+        });
+    }
+
+    if (waForm) {
+        waForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = document.getElementById('waName').value.trim();
+            const topic = document.getElementById('waTopic').value;
+            const message = document.getElementById('waMessage').value.trim();
+
+            const fullText = `¡Hola Segundo! 👋\n\n👤 Mi nombre: ${name}\n📌 Asunto: ${topic}\n💬 Mensaje: ${message}\n\n(Enviado desde tu perfil web)`;
+            const waUrl = `https://wa.me/?text=${encodeURIComponent(fullText)}`;
+
+            playSound('success');
+            if (window.fireConfetti) window.fireConfetti();
+            showToast('¡Abriendo WhatsApp con tu mensaje! 🚀');
+
+            setTimeout(() => {
+                window.open(waUrl, '_blank', 'noopener,noreferrer');
+                waModal.classList.remove('active');
+                waModal.setAttribute('aria-hidden', 'true');
+                waForm.reset();
+            }, 350);
+        });
+    }
+
+    /* --------------------------------------------------------------------------
+     * 10. COPIAR CORREO ELECTRÓNICO DIRECTO
      * -------------------------------------------------------------------------- */
     const copyEmailBtn = document.getElementById('btn-copy-email');
     if (copyEmailBtn) {
@@ -288,6 +432,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     await navigator.clipboard.writeText(email);
                 }
                 playSound('success');
+                if (window.fireConfetti) window.fireConfetti();
                 showToast(`¡Correo copiado: ${email}! ✉️`);
             } catch (err) {
                 window.location.href = `mailto:${email}`;
@@ -296,7 +441,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* --------------------------------------------------------------------------
-     * 9. FILTRADO DE PESTAÑAS (TABS BENTO)
+     * 11. FILTRADO DE PESTAÑAS (TABS BENTO)
      * -------------------------------------------------------------------------- */
     const tabButtons = document.querySelectorAll('.tab-btn');
     const filterableCards = document.querySelectorAll('[data-category]');
@@ -325,7 +470,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /* --------------------------------------------------------------------------
-     * 10. SPOTLIGHT Y 3D TILT AL MOVER EL RATÓN
+     * 12. SPOTLIGHT Y 3D TILT AL MOVER EL RATÓN
      * -------------------------------------------------------------------------- */
     const container = document.getElementById('mainContainer');
 
@@ -366,11 +511,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /* --------------------------------------------------------------------------
-     * 11. ATAJOS DE TECLADO GLOBALES
+     * 13. ATAJOS DE TECLADO GLOBALES
      * -------------------------------------------------------------------------- */
     const themesList = ['cyan', 'purple', 'emerald', 'sunset'];
     document.addEventListener('keydown', (e) => {
-        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
 
         const key = e.key.toLowerCase();
 
@@ -396,16 +541,23 @@ document.addEventListener('DOMContentLoaded', () => {
             playSound('toggle');
             showToast(`Tema: ${themesList[nextIndex].toUpperCase()} ✨`);
         }
-        // ESC -> Cerrar modal
-        else if (e.key === 'Escape' && qrModal && qrModal.classList.contains('active')) {
-            qrModal.classList.remove('active');
-            qrModal.setAttribute('aria-hidden', 'true');
-            playSound('click');
+        // ESC -> Cerrar cualquier modal
+        else if (e.key === 'Escape') {
+            if (qrModal && qrModal.classList.contains('active')) {
+                qrModal.classList.remove('active');
+                qrModal.setAttribute('aria-hidden', 'true');
+                playSound('click');
+            }
+            if (waModal && waModal.classList.contains('active')) {
+                waModal.classList.remove('active');
+                waModal.setAttribute('aria-hidden', 'true');
+                playSound('click');
+            }
         }
     });
 
     /* --------------------------------------------------------------------------
-     * 12. MOTOR DE PARTÍCULAS INTERACTIVAS EN CANVAS (60FPS Ligero)
+     * 14. MOTOR DE PARTÍCULAS INTERACTIVAS EN CANVAS (60FPS Ligero)
      * -------------------------------------------------------------------------- */
     const canvas = document.getElementById('bgCanvas');
     if (canvas) {
@@ -458,7 +610,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (this.x < 0 || this.x > width) this.vx *= -1;
                 if (this.y < 0 || this.y > height) this.vy *= -1;
 
-                // Interacción suave con el cursor
                 if (mouse.x !== null && mouse.y !== null) {
                     const dx = mouse.x - this.x;
                     const dy = mouse.y - this.y;
@@ -477,7 +628,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function initParticles() {
             particles = [];
-            // Densidad adaptada al tamaño de pantalla
             const count = Math.floor((width * height) / 16000);
             const total = Math.min(Math.max(count, 35), 85);
             for (let i = 0; i < total; i++) {
