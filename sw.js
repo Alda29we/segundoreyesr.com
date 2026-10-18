@@ -1,10 +1,10 @@
 // Service Worker para PWA - Segundo Reyes
-const CACHE_NAME = 'sr-cache-v4';
+const CACHE_NAME = 'sr-cache-v5';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
-  '/styles.css?v=2.1',
-  '/script.js?v=2.1',
+  '/styles.css?v=2.2',
+  '/script.js?v=2.2',
   '/manifest.webmanifest',
   '/assets/favicon.svg',
   '/assets/avatar.jpg'

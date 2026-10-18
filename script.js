@@ -578,41 +578,41 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /* --------------------------------------------------------------------------
-     * 12. SPOTLIGHT Y 3D TILT AL MOVER EL RATÓN
+     * 12. SPOTLIGHT SUAVE AL MOVER EL RATÓN (Optimizado con rAF)
      * -------------------------------------------------------------------------- */
     const container = document.getElementById('mainContainer');
 
     if (container) {
-        window.addEventListener('mousemove', (e) => {
-            const rect = container.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+        let containerRect = null;
+        const updateRect = () => { containerRect = container.getBoundingClientRect(); };
+        updateRect();
+        window.addEventListener('resize', updateRect, { passive: true });
+        window.addEventListener('scroll', updateRect, { passive: true });
 
-            container.style.setProperty('--mouse-x', `${x}px`);
-            container.style.setProperty('--mouse-y', `${y}px`);
-        });
+        let ticking = false;
+        let mouseX = 0, mouseY = 0;
+
+        window.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+
+            if (!ticking) {
+                ticking = true;
+                requestAnimationFrame(() => {
+                    if (containerRect) {
+                        const x = mouseX - containerRect.left;
+                        const y = mouseY - containerRect.top;
+                        container.style.setProperty('--mouse-x', `${x}px`);
+                        container.style.setProperty('--mouse-y', `${y}px`);
+                    }
+                    ticking = false;
+                });
+            }
+        }, { passive: true });
     }
 
     const linkCards = document.querySelectorAll('.link-card');
     linkCards.forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-
-            const rotateX = ((y - centerY) / centerY) * -5;
-            const rotateY = ((x - centerX) / centerX) * 5;
-
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-3px) scale(1.012)`;
-        });
-
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = '';
-        });
-
         card.addEventListener('click', () => {
             playSound('click');
         });
@@ -670,43 +670,42 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /* --------------------------------------------------------------------------
-     * 14. MOTOR DE PARTÍCULAS INTERACTIVAS EN CANVAS (60FPS Ligero)
+     * 14. MOTOR DE PARTÍCULAS INTERACTIVAS EN CANVAS (Optimizado 60FPS)
      * -------------------------------------------------------------------------- */
     const canvas = document.getElementById('bgCanvas');
     if (canvas) {
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d', { alpha: true });
         let particles = [];
         let width = canvas.width = window.innerWidth;
         let height = canvas.height = window.innerHeight;
+        let animationFrameId = null;
 
-        const mouse = { x: null, y: null, radius: 120 };
+        const mouse = { x: null, y: null, radius: 100 };
 
         window.addEventListener('resize', () => {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
             initParticles();
-        });
+        }, { passive: true });
 
         window.addEventListener('mousemove', (e) => {
             mouse.x = e.clientX;
             mouse.y = e.clientY;
-        });
+        }, { passive: true });
 
         window.addEventListener('mouseleave', () => {
             mouse.x = null;
             mouse.y = null;
-        });
+        }, { passive: true });
 
         class Particle {
             constructor() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.size = Math.random() * 2 + 0.8;
-                this.baseX = this.x;
-                this.baseY = this.y;
-                this.vx = (Math.random() - 0.5) * 0.45;
-                this.vy = (Math.random() - 0.5) * 0.45;
-                this.alpha = Math.random() * 0.5 + 0.2;
+                this.size = Math.random() * 1.8 + 0.6;
+                this.vx = (Math.random() - 0.5) * 0.4;
+                this.vy = (Math.random() - 0.5) * 0.4;
+                this.alpha = Math.random() * 0.4 + 0.15;
             }
 
             draw() {
@@ -726,14 +725,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (mouse.x !== null && mouse.y !== null) {
                     const dx = mouse.x - this.x;
                     const dy = mouse.y - this.y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const distSq = dx * dx + dy * dy;
 
-                    if (dist < mouse.radius) {
-                        const force = (mouse.radius - dist) / mouse.radius;
-                        const directionX = (dx / dist) * force * 2.5;
-                        const directionY = (dy / dist) * force * 2.5;
-                        this.x -= directionX;
-                        this.y -= directionY;
+                    if (distSq < 10000) { // 100^2
+                        const dist = Math.sqrt(distSq);
+                        const force = (100 - dist) / 100;
+                        this.x -= (dx / dist) * force * 2;
+                        this.y -= (dy / dist) * force * 2;
                     }
                 }
             }
@@ -741,25 +739,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function initParticles() {
             particles = [];
-            const count = Math.floor((width * height) / 16000);
-            const total = Math.min(Math.max(count, 35), 85);
+            // Densidad balanceada para alto rendimiento (máximo 40 partículas)
+            const count = Math.floor((width * height) / 28000);
+            const total = Math.min(Math.max(count, 20), 40);
             for (let i = 0; i < total; i++) {
                 particles.push(new Particle());
             }
         }
 
         function connectParticles() {
-            const maxDistance = 100;
+            const maxDistanceSq = 8100; // 90^2
+            ctx.lineWidth = 0.7;
+
             for (let a = 0; a < particles.length; a++) {
                 for (let b = a + 1; b < particles.length; b++) {
                     const dx = particles[a].x - particles[b].x;
                     const dy = particles[a].y - particles[b].y;
-                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    const distSq = dx * dx + dy * dy;
 
-                    if (dist < maxDistance) {
-                        const opacity = (1 - dist / maxDistance) * 0.15;
+                    if (distSq < maxDistanceSq) {
+                        const dist = Math.sqrt(distSq);
+                        const opacity = (1 - dist / 90) * 0.12;
                         ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
-                        ctx.lineWidth = 0.8;
                         ctx.beginPath();
                         ctx.moveTo(particles[a].x, particles[a].y);
                         ctx.lineTo(particles[b].x, particles[b].y);
@@ -776,8 +777,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 particles[i].update();
             }
             connectParticles();
-            requestAnimationFrame(animate);
+            animationFrameId = requestAnimationFrame(animate);
         }
+
+        // Pausar renderizado cuando la pestaña está oculta para ahorrar CPU/Batería
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            } else {
+                animate();
+            }
+        });
 
         initParticles();
         animate();

@@ -98,11 +98,13 @@ body {
 .ambient-glow {
     position: fixed;
     border-radius: 50%;
-    filter: blur(110px);
+    filter: blur(80px);
     opacity: 0.35;
     pointer-events: none;
     z-index: 0;
     will-change: transform;
+    transform: translateZ(0);
+    contain: paint layout;
     transition: background 0.8s ease;
 }
 
@@ -158,8 +160,9 @@ body {
     width: 100%;
     max-width: 550px;
     background: var(--card-bg);
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transform: translateZ(0);
     border: 1px solid var(--card-border);
     border-radius: var(--radius-xl);
     padding: 34px 30px;
@@ -534,11 +537,16 @@ body {
     text-decoration: none;
     color: var(--text-primary);
     overflow: hidden;
-    transition: var(--transition-smooth);
+    transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s ease;
+    will-change: transform;
+    transform: translateZ(0);
     opacity: 0;
     animation: fadeInCard 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     cursor: pointer;
     width: 100%;
+}
+.link-card:hover {
+    transform: translateY(-3px) scale(1.012);
 }
 
 .link-card.hidden {
