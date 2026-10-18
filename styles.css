@@ -709,6 +709,15 @@ body {
     box-shadow: 0 10px 30px rgba(225, 48, 108, 0.25);
 }
 
+/* Telegram */
+.card-telegram .card-icon {
+    background: linear-gradient(135deg, #2aabee, #229ed9);
+}
+.card-telegram:hover {
+    border-color: rgba(34, 158, 217, 0.5);
+    box-shadow: 0 10px 30px rgba(34, 158, 217, 0.25);
+}
+
 /* X (Twitter) */
 .card-x .card-icon {
     background: linear-gradient(135deg, #1f2937, #000000);

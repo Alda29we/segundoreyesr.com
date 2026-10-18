@@ -282,7 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (copyEmailBtn) {
         copyEmailBtn.addEventListener('click', async () => {
             playSound('click');
-            const email = 'areyesquino@gmail.com';
+            const email = 'segundo33reyesrojas@gmail.com';
             try {
                 if (navigator.clipboard) {
                     await navigator.clipboard.writeText(email);
