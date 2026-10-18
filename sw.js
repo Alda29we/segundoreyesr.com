@@ -33,7 +33,6 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  // Solo interceptar peticiones GET
   if (event.request.method !== 'GET') return;
 
   event.respondWith(
@@ -47,7 +46,6 @@ self.addEventListener('fetch', (event) => {
         }
         return networkResponse;
       }).catch(() => {
-        // En caso de estar offline, retornar fallback en caché si existe
         return cachedResponse;
       });
 
