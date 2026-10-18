@@ -1165,6 +1165,43 @@ body {
 }
 
 /* ==========================================================================
+   ESTILOS DE MODAL TELEGRAM
+   ========================================================================== */
+.badge-tg-icon {
+    background: rgba(34, 158, 217, 0.18);
+    border: 1px solid rgba(34, 158, 217, 0.4);
+    color: #229ed9;
+}
+
+.btn-submit-tg {
+    width: 100%;
+    background: linear-gradient(135deg, #2aabee, #229ed9);
+    color: #ffffff;
+    border: none;
+    padding: 13px;
+    border-radius: var(--radius-md);
+    font-weight: 700;
+    font-size: 0.95rem;
+    font-family: inherit;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+    margin-top: 6px;
+}
+
+.btn-submit-tg:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(34, 158, 217, 0.4);
+}
+
+.btn-submit-tg:active {
+    transform: scale(0.98);
+}
+
+/* ==========================================================================
    TOAST NOTIFICATION FLOTANTE
    ========================================================================== */
 .toast-notification {

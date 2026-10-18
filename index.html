@@ -245,21 +245,21 @@
             </a>
 
             <!-- Telegram (Social & Contact) -->
-            <a href="https://t.me/AldairReyesRoj1" target="_blank" rel="noopener noreferrer" class="link-card card-telegram" data-category="social contact" id="btn-telegram">
+            <div class="link-card card-telegram" data-category="social contact" id="btn-telegram">
                 <div class="card-icon">
                     <i class="fa-brands fa-telegram"></i>
                 </div>
                 <div class="card-info">
                     <div class="card-title-row">
-                        <span class="card-title">Telegram</span>
+                        <span class="card-title">Telegram Directo</span>
                         <span class="card-handle">@AldairReyesRoj1</span>
                     </div>
-                    <span class="card-desc">Chat directo y mensajes rápidos</span>
+                    <span class="card-desc">Redacta y envía un mensaje directo a mi chat</span>
                 </div>
                 <div class="card-action">
-                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    <i class="fa-solid fa-paper-plane"></i>
                 </div>
-            </a>
+            </div>
 
             <!-- 3. Facebook (Social) -->
             <a href="https://www.facebook.com/share/1Aak2EiPfn/" target="_blank" rel="noopener noreferrer" class="link-card card-facebook" data-category="social" id="btn-facebook">
@@ -445,6 +445,44 @@
                 </div>
                 <button type="submit" class="btn-submit-wa" id="btnSubmitWa">
                     <i class="fa-brands fa-whatsapp"></i> Abrir en WhatsApp
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Telegram Rápido -->
+    <div class="modal-overlay" id="telegramModal" aria-hidden="true">
+        <div class="modal-card">
+            <button class="modal-close-btn" id="closeTelegramModal" aria-label="Cerrar ventana">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="modal-header">
+                <div class="modal-icon-badge badge-tg-icon">
+                    <i class="fa-brands fa-telegram"></i>
+                </div>
+                <h3>Mensaje a Telegram</h3>
+                <p>Escribe tu mensaje. Se copiará automáticamente y se abrirá el chat con <strong>@AldairReyesRoj1</strong></p>
+            </div>
+            <form id="telegramForm" class="modal-form">
+                <div class="form-group">
+                    <label for="tgName">Tu Nombre o Empresa</label>
+                    <input type="text" id="tgName" placeholder="Ej. Carlos Mendoza" required autocomplete="name">
+                </div>
+                <div class="form-group">
+                    <label for="tgTopic">Motivo del Contacto</label>
+                    <select id="tgTopic">
+                        <option value="Propuesta de Proyecto">🚀 Propuesta de Proyecto / Trabajo</option>
+                        <option value="Consulta sobre TI o Diseño">💡 Consulta sobre TI o Diseño</option>
+                        <option value="Conectar y Networking">🤝 Conectar y Networking</option>
+                        <option value="Consulta General">💬 Consulta General</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="tgMessage">Tu Mensaje</label>
+                    <textarea id="tgMessage" rows="3" placeholder="Hola Segundo, me gustaría conversar sobre..." required></textarea>
+                </div>
+                <button type="submit" class="btn-submit-tg" id="btnSubmitTg">
+                    <i class="fa-brands fa-telegram"></i> Abrir en Telegram y Pegar
                 </button>
             </form>
         </div>

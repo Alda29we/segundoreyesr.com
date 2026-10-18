@@ -420,6 +420,66 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /* --------------------------------------------------------------------------
+     * 10. MODAL DE MENSAJE RÁPIDO A TELEGRAM
+     * -------------------------------------------------------------------------- */
+    const tgCardBtn = document.getElementById('btn-telegram');
+    const tgModal = document.getElementById('telegramModal');
+    const closeTgModal = document.getElementById('closeTelegramModal');
+    const tgForm = document.getElementById('telegramForm');
+
+    if (tgCardBtn && tgModal) {
+        tgCardBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            playSound('click');
+            tgModal.classList.add('active');
+            tgModal.setAttribute('aria-hidden', 'false');
+        });
+    }
+
+    if (closeTgModal && tgModal) {
+        closeTgModal.addEventListener('click', () => {
+            playSound('click');
+            tgModal.classList.remove('active');
+            tgModal.setAttribute('aria-hidden', 'true');
+        });
+
+        tgModal.addEventListener('click', (e) => {
+            if (e.target === tgModal) {
+                tgModal.classList.remove('active');
+                tgModal.setAttribute('aria-hidden', 'true');
+            }
+        });
+    }
+
+    if (tgForm) {
+        tgForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('tgName').value.trim();
+            const topic = document.getElementById('tgTopic').value;
+            const message = document.getElementById('tgMessage').value.trim();
+
+            const fullText = `¡Hola Segundo! 👋\n\n👤 Mi nombre: ${name}\n📌 Asunto: ${topic}\n💬 Mensaje: ${message}\n\n(Enviado desde tu perfil web)`;
+            
+            try {
+                if (navigator.clipboard) {
+                    await navigator.clipboard.writeText(fullText);
+                }
+            } catch (err) {}
+
+            playSound('success');
+            if (window.fireConfetti) window.fireConfetti();
+            showToast('¡Mensaje copiado! Pégalo en el chat de Telegram ✈️');
+
+            setTimeout(() => {
+                window.open('https://t.me/AldairReyesRoj1', '_blank', 'noopener,noreferrer');
+                tgModal.classList.remove('active');
+                tgModal.setAttribute('aria-hidden', 'true');
+                tgForm.reset();
+            }, 350);
+        });
+    }
+
+    /* --------------------------------------------------------------------------
      * 10. COPIAR CORREO ELECTRÓNICO DIRECTO
      * -------------------------------------------------------------------------- */
     const copyEmailBtn = document.getElementById('btn-copy-email');
@@ -551,6 +611,11 @@ document.addEventListener('DOMContentLoaded', () => {
             if (waModal && waModal.classList.contains('active')) {
                 waModal.classList.remove('active');
                 waModal.setAttribute('aria-hidden', 'true');
+                playSound('click');
+            }
+            if (tgModal && tgModal.classList.contains('active')) {
+                tgModal.classList.remove('active');
+                tgModal.setAttribute('aria-hidden', 'true');
                 playSound('click');
             }
         }
