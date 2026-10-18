@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="cyan">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,9 +7,9 @@
     
     <!-- Meta SEO Básico -->
     <meta name="description" content="Perfil oficial de Segundo Reyes. Apasionado por la tecnología, la informática y el diseño. Conéctate conmigo a través de mis redes sociales oficiales.">
-    <meta name="keywords" content="Segundo Reyes, tecnología, informática, diseño, redes sociales, linktree, perfil">
+    <meta name="keywords" content="Segundo Reyes, tecnología, informática, diseño, redes sociales, linktree, perfil, desarrollador">
     <meta name="author" content="Segundo Reyes">
-    <meta name="theme-color" content="#0a0d14">
+    <meta name="theme-color" content="#080b11">
     
     <!-- Favicon & Iconos de Pestaña -->
     <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
@@ -19,7 +19,7 @@
     <!-- Open Graph / WhatsApp / Facebook / LinkedIn / Telegram -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Segundo Reyes | Enlaces & Perfil Oficial">
-    <meta property="og:description" content="Apasionado por la tecnología, la informática y el diseño. Sígueme en mis redes sociales para mantenernos en contacto.">
+    <meta property="og:description" content="Apasionado por la tecnología, la informática y el diseño. Conoce mis redes y proyectos.">
     <meta property="og:image" content="assets/og-preview.jpg">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -30,7 +30,7 @@
     <!-- Twitter / X Cards -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Segundo Reyes | Enlaces & Perfil Oficial">
-    <meta name="twitter:description" content="Apasionado por la tecnología, la informática y el diseño. Sígueme en mis redes sociales.">
+    <meta name="twitter:description" content="Apasionado por la tecnología, la informática y el diseño. Conéctate conmigo en mis redes.">
     <meta name="twitter:image" content="assets/og-preview.jpg">
 
     <!-- Tipografía Google Fonts & Iconos FontAwesome 6 -->
@@ -43,60 +43,153 @@
 </head>
 <body>
 
-    <!-- Fondos de Luz Ambiental Animados -->
+    <!-- Canvas de Partículas Interactivas en Segundo Plano -->
+    <canvas id="bgCanvas"></canvas>
+
+    <!-- Fondos de Luz Ambiental Animados (Aurora Glow) -->
     <div class="ambient-glow glow-cyan"></div>
     <div class="ambient-glow glow-purple"></div>
     <div class="ambient-glow glow-blue"></div>
 
-    <div class="container">
+    <!-- Contenedor Principal Bento / Glassmorphic con Spotlight -->
+    <div class="container" id="mainContainer">
         
-        <!-- Barra Superior con Botón de Compartir -->
+        <!-- Barra Superior de Herramientas & Personalización -->
         <div class="top-nav">
-            <button class="nav-action-btn" id="shareProfileBtn" title="Compartir perfil" aria-label="Compartir perfil">
-                <i class="fa-solid fa-share-nodes"></i>
-                <span>Compartir</span>
-            </button>
-            <button class="nav-action-btn" id="qrModalBtn" title="Ver código QR" aria-label="Ver código QR">
-                <i class="fa-solid fa-qrcode"></i>
-            </button>
+            <!-- Selector Dinámico de Color de Acento -->
+            <div class="accent-selector" title="Cambiar tema de color de acento">
+                <button class="accent-dot-btn dot-cyan active" data-color="cyan" aria-label="Tema Cian"></button>
+                <button class="accent-dot-btn dot-purple" data-color="purple" aria-label="Tema Púrpura"></button>
+                <button class="accent-dot-btn dot-emerald" data-color="emerald" aria-label="Tema Esmeralda"></button>
+                <button class="accent-dot-btn dot-sunset" data-color="sunset" aria-label="Tema Atardecer"></button>
+            </div>
+
+            <div class="nav-actions-right">
+                <!-- Toggle de Efectos de Sonido Hápticos UI -->
+                <button class="nav-action-btn" id="soundToggleBtn" title="Efectos de sonido interactivos" aria-label="Efectos de sonido">
+                    <i class="fa-solid fa-volume-xmark" id="soundIcon"></i>
+                </button>
+                <!-- Botón de Compartir Perfil -->
+                <button class="nav-action-btn" id="shareProfileBtn" title="Compartir perfil" aria-label="Compartir perfil">
+                    <i class="fa-solid fa-share-nodes"></i>
+                    <span class="desktop-only">Compartir</span>
+                </button>
+                <!-- Botón de Código QR -->
+                <button class="nav-action-btn" id="qrModalBtn" title="Ver código QR del perfil" aria-label="Código QR">
+                    <i class="fa-solid fa-qrcode"></i>
+                </button>
+            </div>
         </div>
 
         <!-- Encabezado de Perfil -->
         <header class="profile-header">
+            <!-- Avatar 3D con Anillo Cónico Giratorio y Partículas -->
             <div class="avatar-container">
                 <div class="avatar-ring"></div>
-                <img src="assets/avatar.jpg" alt="Foto de perfil de Segundo Reyes" class="avatar-img" width="124" height="124">
-                <div class="status-indicator" title="En línea / Activo">
+                <img src="assets/avatar.jpg" alt="Segundo Reyes" class="avatar-img" width="128" height="128">
+                <div class="status-indicator" title="Estado: En línea / Activo">
                     <span class="status-dot"></span>
                 </div>
             </div>
 
-            <div class="badge-pill">
-                <span class="pulse-point"></span>
-                <span>Disponible para proyectos</span>
+            <!-- Widget Dinámico de Escuchando Música (Lo-Fi / Tech Beats) -->
+            <div class="media-badge">
+                <div class="equalizer">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
+                <span class="media-text"><strong>Tech & Creative Vibes</strong> • Spotify</span>
             </div>
 
             <h1 class="profile-name">
                 Segundo Reyes
-                <i class="fa-solid fa-circle-check verified-badge" title="Perfil Verificado"></i>
+                <i class="fa-solid fa-circle-check verified-badge" title="Perfil Oficial Verificado"></i>
             </h1>
 
             <p class="profile-tagline">
-                <span class="tag">Tecnología</span> • 
-                <span class="tag">Informática</span> • 
-                <span class="tag">Diseño</span>
+                <span class="tag">💻 Tecnología</span> • 
+                <span class="tag">⚡ Informática</span> • 
+                <span class="tag">🎨 Diseño</span>
             </p>
 
             <p class="profile-bio">
-                ¡Hola! Me apasiona el mundo digital, el desarrollo y la creación visual. Conéctate conmigo a través de mis redes oficiales.
+                ¡Hola! Me apasiona crear proyectos tecnológicos, el diseño interactivo y compartir conocimientos. Conéctate conmigo en mis canales oficiales.
             </p>
+
+            <!-- Métricas Rápidas / Bento Stats -->
+            <div class="stats-row">
+                <div class="stat-pill">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>Perú</span>
+                </div>
+                <div class="stat-pill highlight">
+                    <span class="pulse-point"></span>
+                    <span>Disponible para proyectos</span>
+                </div>
+                <div class="stat-pill">
+                    <i class="fa-solid fa-bolt"></i>
+                    <span>Activo 24/7</span>
+                </div>
+            </div>
         </header>
 
-        <!-- Listado de Enlaces Modernos -->
-        <main class="links-section">
-            
-            <!-- Facebook -->
-            <a href="https://www.facebook.com/share/1Aak2EiPfn/" target="_blank" rel="noopener noreferrer" class="link-card card-facebook" id="btn-facebook">
+        <!-- Filtros de Categorías (Pestañas Interactivas) -->
+        <div class="category-tabs" role="tablist">
+            <button class="tab-btn active" data-filter="all" role="tab" aria-selected="true">
+                <i class="fa-solid fa-layer-group"></i> Todos
+            </button>
+            <button class="tab-btn" data-filter="social" role="tab" aria-selected="false">
+                <i class="fa-solid fa-hashtag"></i> Redes
+            </button>
+            <button class="tab-btn" data-filter="skills" role="tab" aria-selected="false">
+                <i class="fa-solid fa-laptop-code"></i> Skills
+            </button>
+            <button class="tab-btn" data-filter="contact" role="tab" aria-selected="false">
+                <i class="fa-solid fa-paper-plane"></i> Contacto
+            </button>
+        </div>
+
+        <!-- Sección de Enlaces y Contenido Bento -->
+        <main class="links-section" id="linksContainer">
+
+            <!-- 1. WhatsApp Directo (Contacto) -->
+            <a href="https://wa.me/?text=Hola%20Segundo,%20vi%20tu%20perfil%20web%20y%20me%20gustar%C3%ADa%20conversar" target="_blank" rel="noopener noreferrer" class="link-card card-whatsapp" data-category="contact" id="btn-whatsapp">
+                <div class="card-icon">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </div>
+                <div class="card-info">
+                    <div class="card-title-row">
+                        <span class="card-title">WhatsApp Directo</span>
+                        <span class="badge-new">Rápido</span>
+                    </div>
+                    <span class="card-desc">Escríbeme un mensaje directo al instante</span>
+                </div>
+                <div class="card-action">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </div>
+            </a>
+
+            <!-- 2. Instagram (Social) -->
+            <a href="https://www.instagram.com/segundoaldairreyesrojas/profilecard/?igsh=MXR6cDAwdnluNXJiZg==" target="_blank" rel="noopener noreferrer" class="link-card card-instagram" data-category="social" id="btn-instagram">
+                <div class="card-icon">
+                    <i class="fa-brands fa-instagram"></i>
+                </div>
+                <div class="card-info">
+                    <div class="card-title-row">
+                        <span class="card-title">Instagram</span>
+                        <span class="card-handle">@segundoaldairreyesrojas</span>
+                    </div>
+                    <span class="card-desc">Historias, fotos y contenido diario</span>
+                </div>
+                <div class="card-action">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </div>
+            </a>
+
+            <!-- 3. Facebook (Social) -->
+            <a href="https://www.facebook.com/share/1Aak2EiPfn/" target="_blank" rel="noopener noreferrer" class="link-card card-facebook" data-category="social" id="btn-facebook">
                 <div class="card-icon">
                     <i class="fa-brands fa-facebook-f"></i>
                 </div>
@@ -109,50 +202,53 @@
                 </div>
             </a>
 
-            <!-- Instagram -->
-            <a href="https://www.instagram.com/segundoaldairreyesrojas/profilecard/?igsh=MXR6cDAwdnluNXJiZg==" target="_blank" rel="noopener noreferrer" class="link-card card-instagram" id="btn-instagram">
+            <!-- 4. NGL Mensajes Anónimos (Social) -->
+            <a href="https://ngl.link/segundoaldairreyesrojas2" target="_blank" rel="noopener noreferrer" class="link-card card-ngl" data-category="social" id="btn-ngl">
                 <div class="card-icon">
-                    <i class="fa-brands fa-instagram"></i>
+                    <i class="fa-solid fa-fire-flame-curved"></i>
                 </div>
                 <div class="card-info">
-                    <span class="card-title">Instagram</span>
-                    <span class="card-desc">@segundoaldairreyesrojas</span>
+                    <div class="card-title-row">
+                        <span class="card-title">NGL Anónimo</span>
+                        <span class="badge-fire"><i class="fa-solid fa-fire"></i> Confesiones</span>
+                    </div>
+                    <span class="card-desc">Envíame un mensaje o pregunta secreta</span>
                 </div>
                 <div class="card-action">
                     <i class="fa-solid fa-arrow-up-right-from-square"></i>
                 </div>
             </a>
 
-            <!-- X / Twitter -->
-            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="link-card card-x" id="btn-twitter">
+            <!-- 5. X / Twitter (Social) -->
+            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="link-card card-x" data-category="social" id="btn-twitter">
                 <div class="card-icon">
                     <i class="fa-brands fa-x-twitter"></i>
                 </div>
                 <div class="card-info">
                     <span class="card-title">X (Twitter)</span>
-                    <span class="card-desc">Noticias, tendencias y tech</span>
+                    <span class="card-desc">Noticias, tendencias tech y opiniones</span>
                 </div>
                 <div class="card-action">
                     <i class="fa-solid fa-arrow-up-right-from-square"></i>
                 </div>
             </a>
 
-            <!-- LinkedIn -->
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="link-card card-linkedin" id="btn-linkedin">
+            <!-- 6. LinkedIn (Social & Contact) -->
+            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="link-card card-linkedin" data-category="social contact" id="btn-linkedin">
                 <div class="card-icon">
                     <i class="fa-brands fa-linkedin-in"></i>
                 </div>
                 <div class="card-info">
                     <span class="card-title">LinkedIn</span>
-                    <span class="card-desc">Experiencia y red profesional</span>
+                    <span class="card-desc">Conexión profesional y experiencia</span>
                 </div>
                 <div class="card-action">
                     <i class="fa-solid fa-arrow-up-right-from-square"></i>
                 </div>
             </a>
 
-            <!-- YouTube -->
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="link-card card-youtube" id="btn-youtube">
+            <!-- 7. YouTube (Social) -->
+            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" class="link-card card-youtube" data-category="social" id="btn-youtube">
                 <div class="card-icon">
                     <i class="fa-brands fa-youtube"></i>
                 </div>
@@ -165,21 +261,46 @@
                 </div>
             </a>
 
-            <!-- NGL Mensajes Anónimos -->
-            <a href="https://ngl.link/segundoaldairreyesrojas2" target="_blank" rel="noopener noreferrer" class="link-card card-ngl" id="btn-ngl">
+            <!-- 8. Tarjeta de Habilidades & Stack Tech (Skills Bento) -->
+            <div class="skills-bento-card" data-category="skills">
+                <div class="skills-header">
+                    <i class="fa-solid fa-microchip"></i>
+                    <span>Áreas de Enfoque & Tecnologías</span>
+                </div>
+                <div class="skills-tags">
+                    <span class="skill-tag"><i class="fa-solid fa-code"></i> Desarrollo Web</span>
+                    <span class="skill-tag"><i class="fa-solid fa-bezier-curve"></i> Diseño UI/UX</span>
+                    <span class="skill-tag"><i class="fa-solid fa-server"></i> Soporte TI</span>
+                    <span class="skill-tag"><i class="fa-brands fa-html5"></i> HTML & CSS</span>
+                    <span class="skill-tag"><i class="fa-brands fa-js"></i> JavaScript</span>
+                    <span class="skill-tag"><i class="fa-solid fa-wand-magic-sparkles"></i> Innovación Digital</span>
+                </div>
+            </div>
+
+            <!-- 9. Copiar Correo Directo (Contacto) -->
+            <button class="link-card card-email" data-category="contact" id="btn-copy-email" type="button">
                 <div class="card-icon">
-                    <i class="fa-solid fa-fire-flame-curved"></i>
+                    <i class="fa-solid fa-envelope"></i>
                 </div>
                 <div class="card-info">
-                    <span class="card-title">NGL Anónimo</span>
-                    <span class="card-desc">Envíame un mensaje secreto</span>
+                    <div class="card-title-row">
+                        <span class="card-title">Correo Electrónico</span>
+                        <span class="badge-copy"><i class="fa-regular fa-copy"></i> Copiar</span>
+                    </div>
+                    <span class="card-desc" id="emailText">areyesquino@gmail.com</span>
                 </div>
                 <div class="card-action">
-                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    <i class="fa-solid fa-clone"></i>
                 </div>
-            </a>
+            </button>
 
         </main>
+
+        <!-- Atajos de Teclado Rápidos -->
+        <div class="keyboard-hints desktop-only">
+            <span>Atajos:</span>
+            <kbd>C</kbd> Copiar URL • <kbd>Q</kbd> QR • <kbd>T</kbd> Color • <kbd>ESC</kbd> Cerrar
+        </div>
 
         <!-- Pie de página -->
         <footer class="profile-footer">
@@ -187,7 +308,7 @@
                 <i class="fa-solid fa-bolt"></i> Desplegado en Vercel
             </div>
             <p class="copyright">
-                &copy; <span id="currentYear"></span> Segundo Reyes. Todos los derechos reservados.
+                &copy; <span id="currentYear"></span> Segundo Reyes. Hecho con pasión por el código.
             </p>
         </footer>
 
@@ -200,12 +321,14 @@
                 <i class="fa-solid fa-xmark"></i>
             </button>
             <div class="modal-header">
-                <h3>Escanea mi Perfil</h3>
-                <p>Comparte fácilmente desde tu teléfono móvil</p>
+                <div class="modal-icon-badge">
+                    <i class="fa-solid fa-qrcode"></i>
+                </div>
+                <h3>Escanea el Perfil</h3>
+                <p>Apunta con la cámara de tu celular para abrir este portal al instante</p>
             </div>
             <div class="qr-box" id="qrBox">
-                <!-- Generador de QR dinámico a la URL actual -->
-                <img id="qrImage" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://segundoreyes.com&color=0-242-254&bgcolor=15-20-30" alt="Código QR del perfil" width="200" height="200">
+                <img id="qrImage" src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://segundoreyes.com&color=0-242-254&bgcolor=8-12-20" alt="Código QR del perfil" width="200" height="200">
             </div>
             <button class="btn-copy-link" id="copyLinkModalBtn">
                 <i class="fa-regular fa-copy"></i> Copiar enlace directo
@@ -215,7 +338,7 @@
 
     <!-- Notificación Toast Flotante -->
     <div class="toast-notification" id="toastNotification">
-        <i class="fa-solid fa-check-circle"></i>
+        <i class="fa-solid fa-check-circle" id="toastIcon"></i>
         <span id="toastMessage">¡Enlace copiado al portapapeles! 🚀</span>
     </div>
 
